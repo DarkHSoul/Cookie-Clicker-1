@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:testproject/upgrade/mainUpgrade.dart';
 import 'Settings/mainSettings.dart';
 import 'provider/mainProvider.dart';
 
@@ -52,35 +53,58 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  int currentBottomNavigatonBarIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('AppBar'),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/Settings');
-              },
-              icon: const Icon(Icons.settings),
-            ),
-          ],
-        ),
-        body: Center(
-          child: Column(
-            children: [
-              Consumer<CookieProvider>(
-                builder: (context, cookieproviding, state) {
-                  return TextButton(
-                    onPressed: () {
-                      cookieproviding.incrementCookie();
-                    },
-                    child: Text('${cookieproviding.cookies}'),
-                  );
-                },
-              ),
-            ],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentBottomNavigatonBarIndex,
+        onTap: (value) {
+          currentBottomNavigatonBarIndex == 0
+              ? MaterialPageRoute(builder: (context) => upgradeMain())
+              : currentBottomNavigatonBarIndex == 1
+                  ? MaterialPageRoute(builder: (context) => SettingsPage())
+                  : null;
+        },
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.add_business_outlined), label: "Upgrades")
+        ],
+      ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text('Cookie Clicker'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/Settings');
+            },
+            icon: const Icon(Icons.settings),
           ),
-        ));
+        ],
+      ),
+      body: Center(
+        child: Consumer<CookieProvider>(
+          builder: (context, cookieproviding, state) {
+            return Column(
+              children: [
+                Text(
+                  "Cookies: ${cookieproviding.cookies}",
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
+                IconButton(
+                  onPressed: () {
+                    cookieproviding.cookies++;
+                  },
+                  icon: Icon(Icons.cookie_outlined),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
   }
 }
