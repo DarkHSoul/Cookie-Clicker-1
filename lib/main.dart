@@ -27,14 +27,13 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  int currentBottomNavigationBarIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
@@ -48,86 +47,88 @@ class _MyAppState extends State<MyApp> {
               '/Upgrades': (context) => upgradeMain(),
             },
             debugShowCheckedModeBanner: false,
-            home: Scaffold(
-              appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                title: const Text('Cookie Clicker'),
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/Settings');
-                    },
-                    icon: const Icon(Icons.settings),
-                  ),
-                ],
-              ),
-              body: Center(
-                child: Consumer<CookieProvider>(
-                  builder: (context, cookieproviding, state) {
-                    return Column(
-                      children: [
-                        currentBottomNavigationBarIndex == 0
-                            ? HomeWidget()
-                            : upgradeMain(),
-                        Text(
-                          "Cookies: ${cookieproviding.cookies}",
-                          style: Theme.of(context).textTheme.displayMedium,
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            cookieproviding.cookies++;
-                          },
-                          icon: Icon(Icons.cookie_outlined),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-              bottomNavigationBar: BottomNavigationBar(
-                currentIndex: currentBottomNavigationBarIndex,
-                onTap: (int index) {
-                  setState(() {
-                    currentBottomNavigationBarIndex = index;
-                  });
-                  switch (index) {
-                    case 0:
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => HomeWidget(),
-                      ));
-                      break;
-                    case 1:
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => upgradeMain(),
-                      ));
-                      break;
-                  }
-                },
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: "Home",
-                  ),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.add_business_outlined),
-                      label: "Upgrades")
-                ],
-              ),
-            ));
+            home: HomeWidget());
       },
     );
   }
 }
 
 class HomeWidget extends StatefulWidget {
+  const HomeWidget({super.key});
+
   @override
   State<HomeWidget> createState() => _HomeWidgetState();
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  int currentBottomNavigationBarIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text('Cookie Clicker'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/Settings');
+            },
+            icon: const Icon(Icons.settings),
+          ),
+        ],
+      ),
+      body: Center(
+        child: Consumer<CookieProvider>(
+          builder: (context, cookieproviding, state) {
+            return Column(
+              children: [
+                currentBottomNavigationBarIndex == 0
+                    ? HomeWidget()
+                    : upgradeMain(),
+                Text(
+                  "Cookies: ${cookieproviding.cookies}",
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
+                IconButton(
+                  onPressed: () {
+                    cookieproviding.cookies++;
+                  },
+                  icon: Icon(Icons.cookie_outlined),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentBottomNavigationBarIndex,
+        onTap: (int index) {
+          setState(() {
+            currentBottomNavigationBarIndex = index;
+          });
+          switch (index) {
+            case 0:
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => HomeWidget(),
+              ));
+              break;
+            case 1:
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => upgradeMain(),
+              ));
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.add_business_outlined), label: "Upgrades")
+        ],
+      ),
+    );
   }
 }
