@@ -114,15 +114,3 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 }
-
-class HomeWidget extends StatefulWidget {
-  @override
-  State<HomeWidget> createState() => _HomeWidgetState();
-}
-
-class _HomeWidgetState extends State<HomeWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
-  }
-}
