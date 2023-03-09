@@ -59,7 +59,10 @@ class _HomeWidgetState extends State<HomeWidget> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentBottomNavigatonBarIndex,
-        onTap: (value) {
+        onTap: (index) {
+          setState(() {
+            index = currentBottomNavigatonBarIndex;
+          });
           currentBottomNavigatonBarIndex == 0
               ? MaterialPageRoute(builder: (context) => upgradeMain())
               : currentBottomNavigatonBarIndex == 1
