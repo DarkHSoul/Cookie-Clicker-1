@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testproject/main.dart';
 
 class upgradeMain extends StatefulWidget {
   const upgradeMain({super.key});
@@ -8,8 +9,9 @@ class upgradeMain extends StatefulWidget {
 }
 
 class _upgradeMainState extends State<upgradeMain> {
+  int currentBottomNavigatonBarIndex = 1;
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold();
   }
 }

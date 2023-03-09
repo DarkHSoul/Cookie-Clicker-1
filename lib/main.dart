@@ -21,14 +21,20 @@ void main() async {
             value:
                 cookieProvider), // use value constructor to pass in the initialized provider
       ],
-      child: const MyApp(),
+      child: MyApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int currentBottomNavigationBarIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
@@ -59,10 +65,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentBottomNavigatonBarIndex,
-        onTap: (index) {
-          setState(() {
-            index = currentBottomNavigatonBarIndex;
-          });
+        onTap: (value) {
           currentBottomNavigatonBarIndex == 0
               ? MaterialPageRoute(builder: (context) => upgradeMain())
               : currentBottomNavigatonBarIndex == 1
@@ -109,5 +112,17 @@ class _HomeWidgetState extends State<HomeWidget> {
         ),
       ),
     );
+  }
+}
+
+class HomeWidget extends StatefulWidget {
+  @override
+  State<HomeWidget> createState() => _HomeWidgetState();
+}
+
+class _HomeWidgetState extends State<HomeWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
   }
 }
