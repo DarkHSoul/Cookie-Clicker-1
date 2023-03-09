@@ -39,32 +39,44 @@ class _MyAppState extends State<MyApp> {
     return Consumer<ThemeProvider>(
       builder: (context, provider, state) {
         return MaterialApp(
-            themeMode: provider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-            theme: provider.isDarkMode ? ThemeData.dark() : ThemeData.light(),
-            routes: {
-              '/Home': (context) => HomeWidget(),
-              '/Settings': (context) => SettingsPage(),
-              '/Upgrades': (context) => upgradeMain(),
-            },
-            debugShowCheckedModeBanner: false,
-            home: HomeWidget());
+          themeMode: provider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+          theme: provider.isDarkMode ? ThemeData.dark() : ThemeData.light(),
+          routes: {
+            '/Settings': (context) => SettingsPage(),
+          },
+          debugShowCheckedModeBanner: false,
+          home: HomeWidget(),
+        );
       },
     );
   }
 }
 
 class HomeWidget extends StatefulWidget {
-  const HomeWidget({super.key});
-
   @override
   State<HomeWidget> createState() => _HomeWidgetState();
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  int currentBottomNavigationBarIndex = 0;
+  int currentBottomNavigatonBarIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentBottomNavigatonBarIndex,
+        onTap: (value) {
+          currentBottomNavigatonBarIndex == 0
+              ? MaterialPageRoute(builder: (context) => upgradeMain())
+              : currentBottomNavigatonBarIndex == 1
+                  ? MaterialPageRoute(builder: (context) => SettingsPage())
+                  : null;
+        },
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.add_business_outlined), label: "Upgrades")
+        ],
+      ),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -83,9 +95,6 @@ class _HomeWidgetState extends State<HomeWidget> {
           builder: (context, cookieproviding, state) {
             return Column(
               children: [
-                currentBottomNavigationBarIndex == 0
-                    ? HomeWidget()
-                    : upgradeMain(),
                 Text(
                   "Cookies: ${cookieproviding.cookies}",
                   style: Theme.of(context).textTheme.displayMedium,
@@ -100,34 +109,6 @@ class _HomeWidgetState extends State<HomeWidget> {
             );
           },
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentBottomNavigationBarIndex,
-        onTap: (int index) {
-          setState(() {
-            currentBottomNavigationBarIndex = index;
-          });
-          switch (index) {
-            case 0:
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => HomeWidget(),
-              ));
-              break;
-            case 1:
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => upgradeMain(),
-              ));
-              break;
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.add_business_outlined), label: "Upgrades")
-        ],
       ),
     );
   }
